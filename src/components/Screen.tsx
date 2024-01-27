@@ -3,11 +3,13 @@ import Cursor from './Cursor';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { memo } from 'react';
+import Rect from './RectOne';
 
 const Container = styled.div`
   width: 320px;
   height: 240px;
   border: 1px solid #000;
+  position: relative;
 `;
 
 const Screen = () => {
@@ -17,6 +19,7 @@ const Screen = () => {
   return (
     <Container>
       <Cursor x={cursorCoordX} y={cursorCoordY} />
+      <Rect />
     </Container>
   );
 };

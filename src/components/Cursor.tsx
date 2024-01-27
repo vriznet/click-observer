@@ -20,6 +20,7 @@ const CursorSC = styled.div<ICursorSCProps>`
   border-radius: 50%;
   background-color: #000;
   opacity: 0.5;
+  z-index: 999;
 `;
 
 const Cursor = (props: ICursorProps) => {
