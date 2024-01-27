@@ -11,7 +11,7 @@ const RectOneSC = styled.div`
   border: 1px solid #000;
 `;
 
-const Rect = () => {
+const RectOne = () => {
   return (
     <RectOneSC>
       <RectTwo />
@@ -19,4 +19,4 @@ const Rect = () => {
   );
 };
 
-export default memo(Rect);
+export default memo(RectOne);
