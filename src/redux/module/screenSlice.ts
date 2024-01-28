@@ -21,14 +21,14 @@ const initialState: ScreenState = {
       height: 0,
       zIndex: 0,
     },
-    RectOne: {
+    LeftSidePanel: {
       x: 0,
       y: 0,
       width: 0,
       height: 0,
       zIndex: 0,
     },
-    RectFour: {
+    RightSidePanel: {
       x: 0,
       y: 0,
       width: 0,
@@ -38,8 +38,8 @@ const initialState: ScreenState = {
   },
   componentOfScreenVisibilities: {
     '': false,
-    RectOne: false,
-    RectFour: false,
+    LeftSidePanel: false,
+    RightSidePanel: false,
   },
 };
 

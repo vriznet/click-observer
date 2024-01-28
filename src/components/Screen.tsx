@@ -3,8 +3,6 @@ import Cursor from './Cursor';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { memo, useCallback, useEffect, useState } from 'react';
-import RectOne from './RectOne';
-import RectFour from './RectFour';
 import {
   ComponentOfScreenAppearances,
   ComponentOfScreenName,
@@ -14,6 +12,8 @@ import {
   selectComponentOfScreenVisibilities,
 } from '../redux/module/screenSlice';
 import { Coord } from '../types/data/common';
+import LeftSidePanel from './LeftSidePanel';
+import RightSidePanel from './RightSidePanel';
 
 const Container = styled.div`
   width: 320px;
@@ -97,8 +97,8 @@ const Screen = () => {
   return (
     <Container>
       <Cursor x={cursorCoordX} y={cursorCoordY} />
-      <RectOne />
-      <RectFour />
+      <LeftSidePanel />
+      <RightSidePanel />
     </Container>
   );
 };

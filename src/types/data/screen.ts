@@ -1,6 +1,6 @@
 import { Appearance } from './common';
 
-export type ComponentOfScreenName = '' | 'RectOne' | 'RectFour';
+export type ComponentOfScreenName = '' | 'LeftSidePanel' | 'RightSidePanel';
 
 export type ComponentOfScreenAppearances = {
   [componentName in ComponentOfScreenName]: Appearance;
