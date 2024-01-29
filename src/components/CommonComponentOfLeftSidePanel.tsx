@@ -1,37 +1,33 @@
-import {
-  forwardRef,
-  memo,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
-  updateComponentOfScreenAppearances,
-  updateComponentOfScreenVisibilities,
-} from '../redux/module/screenSlice';
-import { ComponentOfScreenName } from '../types/data/screen';
+  updateComponentOfLeftSidePanelAppearances,
+  updateComponentOfLeftSidePanelVisibilities,
+} from '../redux/module/leftSidePanelSlice';
+import { ComponentOfLeftSidePanelName } from '../types/data/leftSidePanel';
 
-interface ICommonComponentOfScreenContainerSCProps {
+interface ICommonComponentOfLeftSidePanelContainerSCProps {
   $x: number;
   $y: number;
   $width: number;
   $height: number;
   $zIndex: number;
+  $backgroundColor: string;
 }
 
-interface ICommonComponentOfScreenProps {
-  componentName: ComponentOfScreenName;
+interface ICommonComponentOfLeftSidePanelProps {
+  componentName: ComponentOfLeftSidePanelName;
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number;
+  backgroundColor: string;
   children: React.ReactNode;
 }
 
-const CommonComponentOfScreenContainerSC = styled.div<ICommonComponentOfScreenContainerSCProps>`
+const CommonComponentOfLeftSidePanelContainerSC = styled.div<ICommonComponentOfLeftSidePanelContainerSCProps>`
   position: absolute;
   top: ${(props) => props.$y}px;
   left: ${(props) => props.$x}px;
@@ -39,32 +35,33 @@ const CommonComponentOfScreenContainerSC = styled.div<ICommonComponentOfScreenCo
   height: ${(props) => props.$height}px;
   border: 1px solid #000;
   z-index: ${(props) => props.$zIndex};
-  background-color: #fff;
+  background-color: ${(props) => props.$backgroundColor};
 `;
 
-const CommonComponentOfScreen = forwardRef<
-  HTMLDivElement,
-  ICommonComponentOfScreenProps
->((props: ICommonComponentOfScreenProps, ref) => {
+const CommonComponentOfLeftSidePanel = (
+  props: ICommonComponentOfLeftSidePanelProps
+) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useImperativeHandle(ref, () => containerRef.current!, []);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const container = containerRef.current;
-    if (container) {
+    const parentElement = container?.parentElement;
+    if (container && parentElement) {
       const containerBoundingRect = container.getBoundingClientRect();
       const containerComputedStyles = getComputedStyle(container);
       const zIndex = parseInt(containerComputedStyles.zIndex || '0');
+
+      const parentElementBoundingRect = parentElement.getBoundingClientRect();
+
       if (containerBoundingRect && containerComputedStyles) {
         dispatch(
-          updateComponentOfScreenAppearances({
+          updateComponentOfLeftSidePanelAppearances({
             componentName: props.componentName,
             appearances: {
-              x: containerBoundingRect.x,
-              y: containerBoundingRect.y,
+              x: containerBoundingRect.x - parentElementBoundingRect.x,
+              y: containerBoundingRect.y - parentElementBoundingRect.y,
               width: containerBoundingRect.width,
               height: containerBoundingRect.height,
               zIndex,
@@ -73,7 +70,7 @@ const CommonComponentOfScreen = forwardRef<
         );
         if (containerComputedStyles.display !== 'none') {
           dispatch(
-            updateComponentOfScreenVisibilities({
+            updateComponentOfLeftSidePanelVisibilities({
               componentName: props.componentName,
               visibility: true,
             })
@@ -84,17 +81,18 @@ const CommonComponentOfScreen = forwardRef<
   }, []);
 
   return (
-    <CommonComponentOfScreenContainerSC
+    <CommonComponentOfLeftSidePanelContainerSC
       ref={containerRef}
       $x={props.x}
       $y={props.y}
       $width={props.width}
       $height={props.height}
       $zIndex={props.zIndex}
+      $backgroundColor={props.backgroundColor}
     >
       {props.children}
-    </CommonComponentOfScreenContainerSC>
+    </CommonComponentOfLeftSidePanelContainerSC>
   );
-});
+};
 
-export default memo(CommonComponentOfScreen);
+export default memo(CommonComponentOfLeftSidePanel);

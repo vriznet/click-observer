@@ -1,3 +1,4 @@
+// #region : imports
 import { styled } from 'styled-components';
 import Cursor from './Cursor';
 import { useSelector } from 'react-redux';
@@ -14,13 +15,16 @@ import {
 import { Coord } from '../types/data/common';
 import LeftSidePanel from './LeftSidePanel';
 import RightSidePanel from './RightSidePanel';
+// #endregion : imports
 
+// #region : styled components
 const Container = styled.div`
   width: 320px;
   height: 240px;
   border: 1px solid #000;
   position: relative;
 `;
+// #endregion : styled components
 
 const Screen = () => {
   // #region : states
@@ -97,8 +101,12 @@ const Screen = () => {
   return (
     <Container>
       <Cursor x={cursorCoordX} y={cursorCoordY} />
-      <LeftSidePanel />
-      <RightSidePanel />
+      <LeftSidePanel
+        isHovered={hoveredComponentOfScreenName === 'LeftSidePanel'}
+      />
+      <RightSidePanel
+        isHovered={hoveredComponentOfScreenName === 'RightSidePanel'}
+      />
     </Container>
   );
 };
