@@ -4,17 +4,12 @@ import Cursor from './Cursor';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { memo, useCallback, useEffect, useState } from 'react';
-import {
-  ComponentOfScreenAppearances,
-  ComponentOfScreenName,
-} from '../types/data/screen';
-import {
-  selectComponentOfScreenAppearances,
-  selectComponentOfScreenVisibilities,
-} from '../redux/module/screenSlice';
+import { ComponentOfScreenName } from '../types/data/screen';
+import { selectComponentOfScreenVisibilities } from '../redux/module/screenSlice';
 import { Coord } from '../types/data/common';
 import LeftSidePanel from './LeftSidePanel';
 import RightSidePanel from './RightSidePanel';
+import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
 // #endregion : imports
 
 // #region : styled components
@@ -29,7 +24,7 @@ const Container = styled.div`
 const Screen = () => {
   // #region : states
   const [hoveredComponentOfScreenName, setHoveredComponentOfScreenName] =
-    useState<ComponentOfScreenName>('');
+    useState<'screenBoundary' | ComponentOfScreenName>('screenBoundary');
   // #endregion : states
 
   // #region : redux
@@ -37,8 +32,8 @@ const Screen = () => {
   const cursorCoordY = useSelector(selectCursorY);
 
   const componentOfScreenAppearances = useSelector(
-    selectComponentOfScreenAppearances
-  );
+    selectComponentAppearances
+  ).Screen;
   const componentOfScreenVisibilities = useSelector(
     selectComponentOfScreenVisibilities
   );
@@ -46,18 +41,21 @@ const Screen = () => {
 
   // #region : getComponentOfScreenNameFromPoint
   const getComponentOfScreenNameFromPoint = useCallback(
-    (point: Coord): ComponentOfScreenName => {
+    (point: Coord): 'screenBoundary' | ComponentOfScreenName => {
+      if (componentOfScreenAppearances === undefined) return 'screenBoundary';
       const screenComponentNameAndVisibilityAndZIndexes: {
         name: ComponentOfScreenName;
         isVisible: boolean;
         zIndex: number;
       }[] = [];
 
-      let key: keyof ComponentOfScreenAppearances;
-      for (key in componentOfScreenAppearances) {
+      (
+        Object.keys(componentOfScreenAppearances) as ComponentOfScreenName[]
+      ).forEach((key) => {
         const appearanceData = componentOfScreenAppearances[key];
         const visibilityData = componentOfScreenVisibilities[key];
 
+        if (!appearanceData || !visibilityData) return;
         if (
           appearanceData.x + appearanceData.width >= point.x &&
           appearanceData.y + appearanceData.height >= point.y &&
@@ -66,19 +64,21 @@ const Screen = () => {
           visibilityData
         ) {
           screenComponentNameAndVisibilityAndZIndexes.push({
-            name: key,
+            name: key as ComponentOfScreenName,
             isVisible: visibilityData,
             zIndex: appearanceData.zIndex,
           });
         }
-      }
+      });
 
       const sortedNameAndZIndex =
         screenComponentNameAndVisibilityAndZIndexes.sort(
           (a, b) => b.zIndex - a.zIndex
         );
 
-      return sortedNameAndZIndex.length > 0 ? sortedNameAndZIndex[0].name : '';
+      return sortedNameAndZIndex.length > 0
+        ? sortedNameAndZIndex[0].name
+        : 'screenBoundary';
     },
     [componentOfScreenAppearances, componentOfScreenVisibilities]
   );

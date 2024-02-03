@@ -7,11 +7,9 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {
-  updateComponentOfScreenAppearances,
-  updateComponentOfScreenVisibilities,
-} from '../redux/module/screenSlice';
+import { updateComponentOfScreenVisibilities } from '../redux/module/screenSlice';
 import { ComponentOfScreenName } from '../types/data/screen';
+import { updateSpecificComponentAppearance } from '../redux/module/componentAppearancesSlice';
 
 interface ICommonComponentOfScreenContainerSCProps {
   $x: number;
@@ -60,9 +58,9 @@ const CommonComponentOfScreen = forwardRef<
       const zIndex = parseInt(containerComputedStyles.zIndex || '0');
       if (containerBoundingRect && containerComputedStyles) {
         dispatch(
-          updateComponentOfScreenAppearances({
+          updateSpecificComponentAppearance({
             componentName: props.componentName,
-            appearances: {
+            appearance: {
               x: containerBoundingRect.x,
               y: containerBoundingRect.y,
               width: containerBoundingRect.width,

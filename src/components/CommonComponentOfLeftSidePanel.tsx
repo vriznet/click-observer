@@ -1,11 +1,9 @@
 import { memo, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {
-  updateComponentOfLeftSidePanelAppearances,
-  updateComponentOfLeftSidePanelVisibilities,
-} from '../redux/module/leftSidePanelSlice';
+import { updateComponentOfLeftSidePanelVisibilities } from '../redux/module/leftSidePanelSlice';
 import { ComponentOfLeftSidePanelName } from '../types/data/leftSidePanel';
+import { updateSpecificComponentAppearance } from '../redux/module/componentAppearancesSlice';
 
 interface ICommonComponentOfLeftSidePanelContainerSCProps {
   $x: number;
@@ -57,9 +55,9 @@ const CommonComponentOfLeftSidePanel = (
 
       if (containerBoundingRect && containerComputedStyles) {
         dispatch(
-          updateComponentOfLeftSidePanelAppearances({
+          updateSpecificComponentAppearance({
             componentName: props.componentName,
-            appearances: {
+            appearance: {
               x: containerBoundingRect.x - parentElementBoundingRect.x,
               y: containerBoundingRect.y - parentElementBoundingRect.y,
               width: containerBoundingRect.width,

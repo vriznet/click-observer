@@ -1,20 +1,15 @@
 // #region : imports
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import CommonComponentOfScreen from './CommonComponentOfScreen';
-import {
-  ComponentOfLeftSidePanelAppearances,
-  ComponentOfLeftSidePanelName,
-} from '../types/data/leftSidePanel';
+import { ComponentOfLeftSidePanelName } from '../types/data/leftSidePanel';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
-import {
-  selectComponentOfLeftSidePanelAppearances,
-  selectComponentOfLeftSidePanelVisibilities,
-} from '../redux/module/leftSidePanelSlice';
+import { selectComponentOfLeftSidePanelVisibilities } from '../redux/module/leftSidePanelSlice';
 import { Coord } from '../types/data/common';
 import { ILeftSidePanelProps } from '../types/props';
 import Red from './Red';
 import Green from './Green';
+import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
 // #endregion : imports
 
 const LeftSidePanel = (props: ILeftSidePanelProps) => {
@@ -22,7 +17,9 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
   const [
     hoveredComponentOfLeftSidePanelName,
     setHoveredComponentOfLeftSidePanelName,
-  ] = useState<ComponentOfLeftSidePanelName>('');
+  ] = useState<'leftSidePanelBoundary' | ComponentOfLeftSidePanelName>(
+    'leftSidePanelBoundary'
+  );
   // #endregion : states
 
   // #region : redux
@@ -30,8 +27,8 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
   const cursorCoordY = useSelector(selectCursorY);
 
   const componentOfLeftSidePanelAppearances = useSelector(
-    selectComponentOfLeftSidePanelAppearances
-  );
+    selectComponentAppearances
+  ).LeftSidePanel;
   const componentOfLeftSidePanelVisibilities = useSelector(
     selectComponentOfLeftSidePanelVisibilities
   );
@@ -43,18 +40,27 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
 
   // #region : getComponentOfLeftSidePanelNameFromPoint
   const getComponentOfLeftSidePanelNameFromPoint = useCallback(
-    (point: Coord, containerCoord: Coord): ComponentOfLeftSidePanelName => {
+    (
+      point: Coord,
+      containerCoord: Coord
+    ): 'leftSidePanelBoundary' | ComponentOfLeftSidePanelName => {
+      if (componentOfLeftSidePanelAppearances === undefined)
+        return 'leftSidePanelBoundary';
       const leftSidePanelComponentNameAndVisibilityAndZIndexes: {
         name: ComponentOfLeftSidePanelName;
         isVisible: boolean;
         zIndex: number;
       }[] = [];
 
-      let key: keyof ComponentOfLeftSidePanelAppearances;
-      for (key in componentOfLeftSidePanelAppearances) {
+      (
+        Object.keys(
+          componentOfLeftSidePanelAppearances
+        ) as ComponentOfLeftSidePanelName[]
+      ).forEach((key) => {
         const appearanceData = componentOfLeftSidePanelAppearances[key];
         const visibilityData = componentOfLeftSidePanelVisibilities[key];
 
+        if (!appearanceData || !visibilityData) return;
         if (
           appearanceData.x + containerCoord.x + appearanceData.width >=
             point.x &&
@@ -70,10 +76,10 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
             zIndex: appearanceData.zIndex,
           });
         }
-      }
+      });
 
       if (leftSidePanelComponentNameAndVisibilityAndZIndexes.length === 0) {
-        return '';
+        return 'leftSidePanelBoundary';
       }
 
       const sortedLeftSidePanelComponentNameAndVisibilityAndZIndexes =
@@ -83,7 +89,7 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
 
       return sortedLeftSidePanelComponentNameAndVisibilityAndZIndexes.length > 0
         ? sortedLeftSidePanelComponentNameAndVisibilityAndZIndexes[0].name
-        : '';
+        : 'leftSidePanelBoundary';
     },
     [componentOfLeftSidePanelAppearances, componentOfLeftSidePanelVisibilities]
   );
@@ -107,7 +113,7 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
         );
       setHoveredComponentOfLeftSidePanelName(hoveredComponentOfLeftSidePanel);
     } else {
-      setHoveredComponentOfLeftSidePanelName('');
+      setHoveredComponentOfLeftSidePanelName('leftSidePanelBoundary');
     }
   }, [props.isHovered, cursorCoordX, cursorCoordY]);
 
