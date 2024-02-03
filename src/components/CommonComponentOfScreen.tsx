@@ -7,9 +7,9 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { updateComponentOfScreenVisibilities } from '../redux/module/screenSlice';
 import { ComponentOfScreenName } from '../types/data/screen';
 import { updateSpecificComponentAppearance } from '../redux/module/componentAppearancesSlice';
+import { updateSpecificComponentVisibility } from '../redux/module/componentVisibilitiesSlice';
 
 interface ICommonComponentOfScreenContainerSCProps {
   $x: number;
@@ -71,7 +71,7 @@ const CommonComponentOfScreen = forwardRef<
         );
         if (containerComputedStyles.display !== 'none') {
           dispatch(
-            updateComponentOfScreenVisibilities({
+            updateSpecificComponentVisibility({
               componentName: props.componentName,
               visibility: true,
             })

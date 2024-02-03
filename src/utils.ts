@@ -3,6 +3,7 @@ import {
   ComponentName,
   PartialComponentAppearances,
   PartialComponentGroupList,
+  PartialComponentVisibilities,
 } from './types/data/common';
 
 export const generateInitialComponentAppearances = (
@@ -35,6 +36,38 @@ export const generateInitialComponentAppearances = (
     }, {} as PartialComponentAppearances),
   };
   return initialAppearances;
+};
+
+export const generateInitialComponentVisibilities = (
+  componentNameList: ComponentName[],
+  componentGroupList: PartialComponentGroupList
+): PartialComponentVisibilities => {
+  const initialVisibilities: PartialComponentVisibilities = {
+    ...componentNameList.reduce((visibilities, componentName) => {
+      const childComponentNameList = componentGroupList[componentName];
+      if (childComponentNameList && childComponentNameList.length > 0) {
+        return {
+          ...visibilities,
+          [componentName]: {
+            ...childComponentNameList.reduce(
+              (childVisibilities, childComponentName) => {
+                return {
+                  ...childVisibilities,
+                  [childComponentName]: false,
+                };
+              },
+              {} as PartialComponentVisibilities
+            ),
+          },
+        };
+      } else {
+        return {
+          ...visibilities,
+        };
+      }
+    }, {} as PartialComponentVisibilities),
+  };
+  return initialVisibilities;
 };
 
 export const getParentComponentNameOfComponentElement = (

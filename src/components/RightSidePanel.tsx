@@ -4,12 +4,12 @@ import CommonComponentOfScreen from './CommonComponentOfScreen';
 import { ComponentOfRightSidePanelName } from '../types/data/rightSidePanel';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
-import { selectComponentOfRightSidePanelVisibilities } from '../redux/module/rightSidePanelSlice';
 import { Coord } from '../types/data/common';
 import { IRightSidePanelProps } from '../types/props';
 import Blue from './Blue';
 import Black from './Black';
 import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
+import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 // #endregion : imports
 
 const RightSidePanel = (props: IRightSidePanelProps) => {
@@ -30,8 +30,8 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
     selectComponentAppearances
   ).RightSidePanel;
   const componentOfRightSidePanelVisibilities = useSelector(
-    selectComponentOfRightSidePanelVisibilities
-  );
+    selectComponentVisibilities
+  ).RightSidePanel;
   // #endregion : redux
 
   // #region : refs
@@ -44,7 +44,10 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
       point: Coord,
       containerCoord: Coord
     ): 'rightSidePanelBoundary' | ComponentOfRightSidePanelName => {
-      if (componentOfRightSidePanelAppearances === undefined)
+      if (
+        componentOfRightSidePanelAppearances === undefined ||
+        componentOfRightSidePanelVisibilities === undefined
+      )
         return 'rightSidePanelBoundary';
       const rightSidePanelComponentNameAndVisibilityAndZIndexes: {
         name: ComponentOfRightSidePanelName;

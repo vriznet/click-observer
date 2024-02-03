@@ -19,6 +19,14 @@ type ComponentAppearances = {
 };
 export type PartialComponentAppearances = Partial<ComponentAppearances>;
 
+type ComponentVisibility = {
+  [componentName in ComponentName]: boolean;
+};
+type ComponentVisibilities = {
+  [componentName in ComponentName]: Partial<ComponentVisibility>;
+};
+export type PartialComponentVisibilities = Partial<ComponentVisibilities>;
+
 export type ComponentOfScreenName = 'LeftSidePanel' | 'RightSidePanel';
 
 export type ComponentOfLeftSidePanelName = 'Red' | 'Green';

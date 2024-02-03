@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { ComponentOfScreenName } from '../types/data/screen';
-import { selectComponentOfScreenVisibilities } from '../redux/module/screenSlice';
 import { Coord } from '../types/data/common';
 import LeftSidePanel from './LeftSidePanel';
 import RightSidePanel from './RightSidePanel';
 import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
+import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 // #endregion : imports
 
 // #region : styled components
@@ -35,14 +35,18 @@ const Screen = () => {
     selectComponentAppearances
   ).Screen;
   const componentOfScreenVisibilities = useSelector(
-    selectComponentOfScreenVisibilities
-  );
+    selectComponentVisibilities
+  ).Screen;
   // #endregion : redux
 
   // #region : getComponentOfScreenNameFromPoint
   const getComponentOfScreenNameFromPoint = useCallback(
     (point: Coord): 'screenBoundary' | ComponentOfScreenName => {
-      if (componentOfScreenAppearances === undefined) return 'screenBoundary';
+      if (
+        componentOfScreenAppearances === undefined ||
+        componentOfScreenVisibilities === undefined
+      )
+        return 'screenBoundary';
       const screenComponentNameAndVisibilityAndZIndexes: {
         name: ComponentOfScreenName;
         isVisible: boolean;

@@ -1,9 +1,9 @@
 import { memo, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { updateComponentOfRightSidePanelVisibilities } from '../redux/module/rightSidePanelSlice';
 import { ComponentOfRightSidePanelName } from '../types/data/rightSidePanel';
 import { updateSpecificComponentAppearance } from '../redux/module/componentAppearancesSlice';
+import { updateSpecificComponentVisibility } from '../redux/module/componentVisibilitiesSlice';
 
 interface ICommonComponentOfRightSidePanelContainerSCProps {
   $x: number;
@@ -68,7 +68,7 @@ const CommonComponentOfRightSidePanel = (
         );
         if (containerComputedStyles.display !== 'none') {
           dispatch(
-            updateComponentOfRightSidePanelVisibilities({
+            updateSpecificComponentVisibility({
               componentName: props.componentName,
               visibility: true,
             })
