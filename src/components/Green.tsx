@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import CommonComponentOfLeftSidePanel from './CommonComponentOfLeftSidePanel';
+import CommonScreenComponent from './CommonScreenComponent';
 
 const Green = () => {
   return (
-    <CommonComponentOfLeftSidePanel
+    <CommonScreenComponent
       componentName="Green"
       x={30}
       y={30}
@@ -13,7 +13,7 @@ const Green = () => {
       backgroundColor="green"
     >
       <div>G</div>
-    </CommonComponentOfLeftSidePanel>
+    </CommonScreenComponent>
   );
 };
 

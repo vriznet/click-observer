@@ -1,6 +1,5 @@
 // #region : imports
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import CommonComponentOfScreen from './CommonComponentOfScreen';
 import { ComponentOfLeftSidePanelName } from '../types/data/leftSidePanel';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
@@ -10,6 +9,7 @@ import Red from './Red';
 import Green from './Green';
 import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
+import CommonScreenComponent from './CommonScreenComponent';
 // #endregion : imports
 
 const LeftSidePanel = (props: ILeftSidePanelProps) => {
@@ -126,18 +126,19 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
   // #endregion : effects
 
   return (
-    <CommonComponentOfScreen
+    <CommonScreenComponent
       componentName="LeftSidePanel"
       x={20}
       y={20}
       width={120}
       height={120}
       zIndex={1}
+      backgroundColor="#fff"
       ref={leftSidePanelRef}
     >
       <Red />
       <Green />
-    </CommonComponentOfScreen>
+    </CommonScreenComponent>
   );
 };
 
