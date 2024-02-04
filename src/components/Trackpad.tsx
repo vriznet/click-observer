@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
-import { setCursorCoordX, setCursorCoordY } from '../redux/module/mouseSlice';
+import { setCursorX, setCursorY } from '../redux/module/mouseSlice';
 
 const TrackpadSC = styled.div`
   width: 320px;
@@ -138,11 +138,11 @@ const Trackpad = () => {
   }, [ongoingTouches, setOngoingTouches]);
 
   useEffect(() => {
-    dispatch(setCursorCoordX(currentCursorCoordX));
+    dispatch(setCursorX(currentCursorCoordX));
   }, [currentCursorCoordX]);
 
   useEffect(() => {
-    dispatch(setCursorCoordY(currentCursorCoordY));
+    dispatch(setCursorY(currentCursorCoordY));
   }, [currentCursorCoordY]);
 
   return <TrackpadSC id="trackpad" ref={trackpadRef} />;

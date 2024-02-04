@@ -1,14 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { componentGroupList, componentNameList } from '../../data/common';
-import {
-  ComponentName,
-  PartialComponentVisibilities,
-} from '../../types/data/common';
+import { PartialComponentVisibilities } from '../../types/data/common';
 import {
   generateInitialComponentVisibilities,
   getParentComponentNameOfComponentElement,
 } from '../../utils';
 import { RootState } from '.';
+import { ComponentName } from '../../types/data/componentName';
 
 export type ComponentVisibilitiesState = PartialComponentVisibilities;
 

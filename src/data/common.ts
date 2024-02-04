@@ -1,4 +1,5 @@
-import { ComponentName, PartialComponentGroupList } from '../types/data/common';
+import { PartialComponentGroupList } from '../types/data/common';
+import { ComponentName } from '../types/data/componentName';
 
 export const baseAppearance = {
   x: 0,

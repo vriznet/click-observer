@@ -8,9 +8,9 @@ import {
 } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { ComponentName } from '../types/data/common';
 import { updateSpecificComponentAppearance } from '../redux/module/componentAppearancesSlice';
 import { updateSpecificComponentVisibility } from '../redux/module/componentVisibilitiesSlice';
+import { ComponentName } from '../types/data/componentName';
 // #endregion : imports
 
 // #region : types

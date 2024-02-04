@@ -1,10 +1,7 @@
 import { memo } from 'react';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-
-interface ICursorProps {
-  x: number;
-  y: number;
-}
+import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 
 interface ICursorSCProps {
   x: number;
@@ -25,8 +22,11 @@ const CursorSC = styled.div.attrs<ICursorSCProps>((props) => ({
   z-index: 999;
 `;
 
-const Cursor = (props: ICursorProps) => {
-  return <CursorSC x={props.x} y={props.y} />;
+const Cursor = () => {
+  const cursorX = useSelector(selectCursorX);
+  const cursorY = useSelector(selectCursorY);
+
+  return <CursorSC x={cursorX} y={cursorY} />;
 };
 
 export default memo(Cursor);

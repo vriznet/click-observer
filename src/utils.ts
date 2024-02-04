@@ -1,6 +1,6 @@
 import { baseAppearance } from './data/common';
+import { ComponentName } from './types/data/componentName';
 import {
-  ComponentName,
   PartialComponentAppearances,
   PartialComponentGroupList,
   PartialComponentVisibilities,

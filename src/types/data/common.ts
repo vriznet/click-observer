@@ -1,3 +1,5 @@
+import { ComponentName } from './componentName';
+
 export type Coord = {
   x: number;
   y: number;
@@ -27,19 +29,7 @@ type ComponentVisibilities = {
 };
 export type PartialComponentVisibilities = Partial<ComponentVisibilities>;
 
-export type ComponentOfScreenName = 'LeftSidePanel' | 'RightSidePanel';
-
-export type ComponentOfLeftSidePanelName = 'Red' | 'Green';
-
-export type ComponentOfRightSidePanelName = 'Blue' | 'Black';
-
-export type ComponentName =
-  | 'Screen'
-  | ComponentOfScreenName
-  | ComponentOfLeftSidePanelName
-  | ComponentOfRightSidePanelName;
-
-export type ComponentGroupList = {
+type ComponentGroupList = {
   [superComponentName in ComponentName]: ComponentName[];
 };
 

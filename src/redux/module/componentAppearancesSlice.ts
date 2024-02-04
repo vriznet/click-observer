@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { componentGroupList, componentNameList } from '../../data/common';
 import {
   Appearance,
-  ComponentName,
   PartialComponentAppearances,
 } from '../../types/data/common';
 import {
@@ -10,6 +9,7 @@ import {
   getParentComponentNameOfComponentElement,
 } from '../../utils';
 import { RootState } from '.';
+import { ComponentName } from '../../types/data/componentName';
 
 export type ComponentAppearancesState = PartialComponentAppearances;
 
