@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 import { ComponentName } from '../types/data/componentName';
 import { useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
@@ -10,7 +10,7 @@ const useHovered = <CCN extends ComponentName>(
   isHovered: boolean,
   containerRef: RefObject<HTMLElement>
 ) => {
-  const boundaryName = `${componentName}Boundary`;
+  const boundaryName = `${componentName}Boundary` as const;
   // #region : states
   const [hoveredComponentName, setHoveredComponentName] = useState<
     CCN | typeof boundaryName
@@ -30,51 +30,58 @@ const useHovered = <CCN extends ComponentName>(
   // #endregion : redux
 
   // #region : getComponentNameFromPoint
-  const getComponentNameFromPoint = (
-    point: { x: number; y: number },
-    containerCoord: { x: number; y: number }
-  ): CCN | typeof boundaryName => {
-    if (
-      componentAppearances === undefined ||
-      componentVisibilities === undefined
-    )
-      return boundaryName;
-    const componentNameAndVisibilityAndZIndexes: {
-      name: CCN;
-      isVisible: boolean;
-      zIndex: number;
-    }[] = [];
-
-    (Object.keys(componentAppearances) as CCN[]).forEach((key) => {
-      const appearanceData = componentAppearances[key];
-      const visibilityData = componentVisibilities[key];
-
-      if (!appearanceData || !visibilityData) return;
+  const getComponentNameFromPoint = useCallback(
+    (
+      point: { x: number; y: number },
+      containerCoord: { x: number; y: number }
+    ): CCN | typeof boundaryName => {
       if (
-        appearanceData.x + containerCoord.x + appearanceData.width >= point.x &&
-        appearanceData.y + containerCoord.y + appearanceData.height >=
-          point.y &&
-        appearanceData.x + containerCoord.x < point.x &&
-        appearanceData.y + containerCoord.y < point.y &&
-        visibilityData
-      ) {
-        componentNameAndVisibilityAndZIndexes.push({
-          name: key,
-          isVisible: visibilityData,
-          zIndex: appearanceData.zIndex,
-        });
-      }
-    });
+        componentAppearances === undefined ||
+        componentVisibilities === undefined
+      )
+        return boundaryName;
+      const componentNameAndVisibilityAndZIndexes: {
+        name: CCN;
+        isVisible: boolean;
+        zIndex: number;
+      }[] = [];
 
-    if (componentNameAndVisibilityAndZIndexes.length === 0) return boundaryName;
+      (Object.keys(componentAppearances) as CCN[]).forEach((key) => {
+        const appearanceData = componentAppearances[key];
+        const visibilityData = componentVisibilities[key];
 
-    const sortedComponentNameAndVisibilityAndZIndexes =
-      componentNameAndVisibilityAndZIndexes.sort((a, b) => b.zIndex - a.zIndex);
+        if (!appearanceData || !visibilityData) return;
+        if (
+          appearanceData.x + containerCoord.x + appearanceData.width >=
+            point.x &&
+          appearanceData.y + containerCoord.y + appearanceData.height >=
+            point.y &&
+          appearanceData.x + containerCoord.x < point.x &&
+          appearanceData.y + containerCoord.y < point.y &&
+          visibilityData
+        ) {
+          componentNameAndVisibilityAndZIndexes.push({
+            name: key,
+            isVisible: visibilityData,
+            zIndex: appearanceData.zIndex,
+          });
+        }
+      });
 
-    return sortedComponentNameAndVisibilityAndZIndexes.length > 0
-      ? sortedComponentNameAndVisibilityAndZIndexes[0].name
-      : boundaryName;
-  };
+      if (componentNameAndVisibilityAndZIndexes.length === 0)
+        return boundaryName;
+
+      const sortedComponentNameAndVisibilityAndZIndexes =
+        componentNameAndVisibilityAndZIndexes.sort(
+          (a, b) => b.zIndex - a.zIndex
+        );
+
+      return sortedComponentNameAndVisibilityAndZIndexes.length > 0
+        ? sortedComponentNameAndVisibilityAndZIndexes[0].name
+        : boundaryName;
+    },
+    [componentAppearances, componentVisibilities]
+  );
   // #endregion : getComponentNameFromPoint
 
   // #region : effects
@@ -90,7 +97,13 @@ const useHovered = <CCN extends ComponentName>(
     } else {
       setHoveredComponentName(boundaryName);
     }
-  }, [isHovered, cursorX, cursorY]);
+  }, [
+    isHovered,
+    cursorX,
+    cursorY,
+    componentAppearances,
+    componentVisibilities,
+  ]);
   // #endregion : effects
 
   return [hoveredComponentName];

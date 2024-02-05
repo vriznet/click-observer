@@ -5,3 +5,11 @@ export interface ILeftSidePanelProps {
 export interface IRightSidePanelProps {
   isHovered: boolean;
 }
+
+export interface IBlackProps {
+  isHovered: boolean;
+}
+
+export interface IGreenProps {
+  isHovered: boolean;
+}

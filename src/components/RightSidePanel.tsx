@@ -6,9 +6,17 @@ import Black from './Black';
 import CommonScreenComponent from './CommonScreenComponent';
 import useHovered from '../hooks/useHovered';
 import { ComponentOfRightSidePanelName } from '../types/data/componentName';
+import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
+import { useSelector } from 'react-redux';
 // #endregion : imports
 
 const RightSidePanel = (props: IRightSidePanelProps) => {
+  // #region : redux
+  const rightPanelVisibility = useSelector(selectComponentVisibilities)[
+    'Screen'
+  ]?.RightSidePanel;
+  // #endregion : redux
+
   // #region : refs
   const rightSidePanelRef = useRef<HTMLDivElement>(null);
   // #endregion : refs
@@ -34,11 +42,12 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
       width={120}
       height={120}
       zIndex={4}
+      isVisible={rightPanelVisibility}
       backgroundColor="#fff"
       ref={rightSidePanelRef}
     >
       <Blue />
-      <Black />
+      <Black isHovered={hoveredComponentOfRightSidePanelName === 'Black'} />
     </CommonScreenComponent>
   );
 };

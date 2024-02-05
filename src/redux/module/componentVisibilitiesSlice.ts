@@ -1,17 +1,26 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { componentGroupList, componentNameList } from '../../data/common';
+import { componentGroupList } from '../../data/common';
 import { PartialComponentVisibilities } from '../../types/data/common';
-import {
-  generateInitialComponentVisibilities,
-  getParentComponentNameOfComponentElement,
-} from '../../utils';
+import { getParentComponentNameOfComponentElement } from '../../utils';
 import { RootState } from '.';
 import { ComponentName } from '../../types/data/componentName';
 
 export type ComponentVisibilitiesState = PartialComponentVisibilities;
 
-const initialState: ComponentVisibilitiesState =
-  generateInitialComponentVisibilities(componentNameList, componentGroupList);
+const initialState: ComponentVisibilitiesState = {
+  Screen: {
+    LeftSidePanel: true,
+    RightSidePanel: true,
+  },
+  LeftSidePanel: {
+    Red: true,
+    Green: true,
+  },
+  RightSidePanel: {
+    Blue: true,
+    Black: true,
+  },
+};
 
 export const componentVisibilitiesSlice = createSlice({
   name: 'componentVisibilities',

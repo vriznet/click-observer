@@ -1,7 +1,35 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import CommonScreenComponent from './CommonScreenComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectComponentVisibilities,
+  updateSpecificComponentVisibility,
+} from '../redux/module/componentVisibilitiesSlice';
+import { selectMouseActionState } from '../redux/module/mouseSlice';
+import { IGreenProps } from '../types/props';
 
-const Green = () => {
+const Green = (props: IGreenProps) => {
+  const dispatch = useDispatch();
+
+  const greenVisibility = useSelector(selectComponentVisibilities)[
+    'LeftSidePanel'
+  ]?.Green;
+
+  const mouseActionState = useSelector(selectMouseActionState);
+
+  useEffect(() => {
+    if (props.isHovered) {
+      if (mouseActionState.isClickStarted) {
+        dispatch(
+          updateSpecificComponentVisibility({
+            componentName: 'LeftSidePanel',
+            visibility: false,
+          })
+        );
+      }
+    }
+  }, [props.isHovered, mouseActionState]);
+
   return (
     <CommonScreenComponent
       componentName="Green"
@@ -10,6 +38,7 @@ const Green = () => {
       width={40}
       height={40}
       zIndex={3}
+      isVisible={greenVisibility}
       backgroundColor="green"
     >
       <div>G</div>

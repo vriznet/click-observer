@@ -20,6 +20,7 @@ interface ICommonScreenComponentContainerSCProps {
   $width: number;
   $height: number;
   $zIndex: number;
+  $isVisible: boolean;
   $backgroundColor: string;
 }
 
@@ -30,6 +31,7 @@ interface ICommonComponentProps {
   width: number;
   height: number;
   zIndex: number;
+  isVisible: boolean | undefined;
   backgroundColor: string;
   children: React.ReactNode;
 }
@@ -38,6 +40,7 @@ interface ICommonComponentProps {
 // #region : styled components
 const CommonScreenComponentContainerSC = styled.div<ICommonScreenComponentContainerSCProps>`
   position: absolute;
+  display: ${(props) => (props.$isVisible ? 'flex' : 'none')};
   top: ${(props) => props.$y}px;
   left: ${(props) => props.$x}px;
   width: ${(props) => props.$width}px;
@@ -105,6 +108,7 @@ const CommonScreenComponent = forwardRef<HTMLDivElement, ICommonComponentProps>(
         $width={props.width}
         $height={props.height}
         $zIndex={props.zIndex}
+        $isVisible={props.isVisible || false}
         $backgroundColor={props.backgroundColor}
       >
         {props.children}

@@ -6,9 +6,16 @@ import Green from './Green';
 import CommonScreenComponent from './CommonScreenComponent';
 import { ComponentOfLeftSidePanelName } from '../types/data/componentName';
 import useHovered from '../hooks/useHovered';
+import { useSelector } from 'react-redux';
+import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 // #endregion : imports
 
 const LeftSidePanel = (props: ILeftSidePanelProps) => {
+  // #region : redux
+  const leftPanelVisibility = useSelector(selectComponentVisibilities)['Screen']
+    ?.LeftSidePanel;
+  // #endregion : redux
+
   // #region : refs
   const leftSidePanelRef = useRef<HTMLDivElement>(null);
   // #endregion : refs
@@ -35,11 +42,12 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
       width={120}
       height={120}
       zIndex={1}
+      isVisible={leftPanelVisibility}
       backgroundColor="#fff"
       ref={leftSidePanelRef}
     >
       <Red />
-      <Green />
+      <Green isHovered={hoveredComponentOfLeftSidePanelName === 'Green'} />
     </CommonScreenComponent>
   );
 };
