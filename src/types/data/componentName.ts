@@ -1,4 +1,7 @@
-export type ComponentOfScreenName = 'LeftSidePanel' | 'RightSidePanel';
+export type ComponentOfScreenName =
+  | 'LeftSidePanel'
+  | 'RightSidePanel'
+  | 'ListContainer';
 
 export type ComponentOfLeftSidePanelName = 'Red' | 'Green';
 

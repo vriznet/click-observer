@@ -6,6 +6,7 @@ import LeftSidePanel from './LeftSidePanel';
 import RightSidePanel from './RightSidePanel';
 import useHovered from '../hooks/useHovered';
 import { ComponentOfScreenName } from '../types/data/componentName';
+import ListContainer from './ListContainer';
 // #endregion : imports
 
 // #region : styled components
@@ -31,7 +32,7 @@ const Screen = () => {
   // #endregion : hooks
 
   useEffect(() => {
-    console.log(hoveredComponentOfScreenName);
+    console.log(`screen hovered: ${hoveredComponentOfScreenName}`);
   }, [hoveredComponentOfScreenName]);
   // #endregion : effects
 
@@ -43,6 +44,9 @@ const Screen = () => {
       />
       <RightSidePanel
         isHovered={hoveredComponentOfScreenName === 'RightSidePanel'}
+      />
+      <ListContainer
+        isHovered={hoveredComponentOfScreenName === 'ListContainer'}
       />
     </Container>
   );

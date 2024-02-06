@@ -13,6 +13,7 @@ export const componentNameList: ComponentName[] = [
   'Screen',
   'LeftSidePanel',
   'RightSidePanel',
+  'ListContainer',
   'Red',
   'Green',
   'Blue',
@@ -20,7 +21,7 @@ export const componentNameList: ComponentName[] = [
 ];
 
 export const componentGroupList: PartialComponentGroupList = {
-  Screen: ['LeftSidePanel', 'RightSidePanel'],
+  Screen: ['LeftSidePanel', 'RightSidePanel', 'ListContainer'],
   LeftSidePanel: ['Red', 'Green'],
   RightSidePanel: ['Blue', 'Black'],
 };

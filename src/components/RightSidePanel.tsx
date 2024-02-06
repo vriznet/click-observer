@@ -30,7 +30,9 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
     );
 
   useEffect(() => {
-    console.log(hoveredComponentOfRightSidePanelName);
+    console.log(
+      `right side panel hovered: ${hoveredComponentOfRightSidePanelName}`
+    );
   }, [hoveredComponentOfRightSidePanelName]);
   // #endregion : effects
 

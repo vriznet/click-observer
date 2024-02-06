@@ -17,7 +17,7 @@ const CursorSC = styled.div.attrs<ICursorSCProps>((props) => ({
   position: absolute;
   width: 4px;
   height: 4px;
-  background-color: #f00;
+  background-color: purple;
   opacity: 1;
   z-index: 999;
 `;

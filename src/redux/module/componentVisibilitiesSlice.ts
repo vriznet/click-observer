@@ -11,6 +11,7 @@ const initialState: ComponentVisibilitiesState = {
   Screen: {
     LeftSidePanel: true,
     RightSidePanel: true,
+    ListContainer: true,
   },
   LeftSidePanel: {
     Red: true,
