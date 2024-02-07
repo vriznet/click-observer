@@ -28,7 +28,9 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
       props.isHovered,
       rightSidePanelRef
     );
+  // #endregion : hooks
 
+  // #region : effects
   useEffect(() => {
     console.log(
       `right side panel hovered: ${hoveredComponentOfRightSidePanelName}`

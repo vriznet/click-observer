@@ -13,7 +13,7 @@ const useHovered = <CCN extends ComponentName>(
   const boundaryName = `${componentName}Boundary` as const;
   // #region : states
   const [hoveredComponentName, setHoveredComponentName] = useState<
-    CCN | typeof boundaryName
+    CCN | typeof boundaryName | 'notHovered'
   >(boundaryName);
   // #endregion : states
 
@@ -34,12 +34,12 @@ const useHovered = <CCN extends ComponentName>(
     (
       point: { x: number; y: number },
       containerCoord: { x: number; y: number }
-    ): CCN | typeof boundaryName => {
+    ): CCN | typeof boundaryName | 'notHovered' => {
       if (
         componentAppearances === undefined ||
         componentVisibilities === undefined
       )
-        return boundaryName;
+        return 'notHovered';
       const componentNameAndVisibilityAndZIndexes: {
         name: CCN;
         isVisible: boolean;
@@ -95,7 +95,7 @@ const useHovered = <CCN extends ComponentName>(
       );
       setHoveredComponentName(hoveredComponent);
     } else {
-      setHoveredComponentName(boundaryName);
+      setHoveredComponentName('notHovered');
     }
   }, [
     isHovered,

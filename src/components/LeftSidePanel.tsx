@@ -29,6 +29,7 @@ const LeftSidePanel = (props: ILeftSidePanelProps) => {
     );
   // #endregion : hooks
 
+  // #region : effects
   useEffect(() => {
     console.log(
       `left side panel hovered: ${hoveredComponentOfLeftSidePanelName}`
