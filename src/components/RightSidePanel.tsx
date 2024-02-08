@@ -8,6 +8,7 @@ import useHovered from '../hooks/useHovered';
 import { ComponentOfRightSidePanelName } from '../types/data/componentName';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 import { useSelector } from 'react-redux';
+import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
 // #endregion : imports
 
 const RightSidePanel = (props: IRightSidePanelProps) => {
@@ -15,6 +16,9 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
   const rightPanelVisibility = useSelector(selectComponentVisibilities)[
     'Screen'
   ]?.RightSidePanel;
+  const hoveredComponentOfRightSidePanelName = useSelector(
+    selectHoveredComponent
+  ).RightSidePanel;
   // #endregion : redux
 
   // #region : refs
@@ -22,12 +26,11 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
   // #endregion : refs
 
   // #region : hooks
-  const [hoveredComponentOfRightSidePanelName] =
-    useHovered<ComponentOfRightSidePanelName>(
-      'RightSidePanel',
-      props.isHovered,
-      rightSidePanelRef
-    );
+  useHovered<ComponentOfRightSidePanelName>(
+    'RightSidePanel',
+    props.isHovered,
+    rightSidePanelRef
+  );
   // #endregion : hooks
 
   // #region : effects

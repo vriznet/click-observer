@@ -1,9 +1,10 @@
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect } from 'react';
 import { ComponentName } from '../types/data/componentName';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
+import { setHoveredComponent } from '../redux/module/hoveredComponentSlice';
 
 const useHovered = <CCN extends ComponentName>(
   componentName: ComponentName,
@@ -11,13 +12,10 @@ const useHovered = <CCN extends ComponentName>(
   containerRef: RefObject<HTMLElement>
 ) => {
   const boundaryName = `${componentName}Boundary` as const;
-  // #region : states
-  const [hoveredComponentName, setHoveredComponentName] = useState<
-    CCN | typeof boundaryName | 'notHovered'
-  >(boundaryName);
-  // #endregion : states
 
   // #region : redux
+  const dispatch = useDispatch();
+
   const cursorX = useSelector(selectCursorX);
   const cursorY = useSelector(selectCursorY);
 
@@ -93,9 +91,19 @@ const useHovered = <CCN extends ComponentName>(
         { x: cursorX, y: cursorY },
         { x: containerBoundingRect.x, y: containerBoundingRect.y }
       );
-      setHoveredComponentName(hoveredComponent);
+      dispatch(
+        setHoveredComponent({
+          componentName: componentName,
+          hoveredChildComponentName: hoveredComponent,
+        })
+      );
     } else {
-      setHoveredComponentName('notHovered');
+      dispatch(
+        setHoveredComponent({
+          componentName: componentName,
+          hoveredChildComponentName: 'notHovered',
+        })
+      );
     }
   }, [
     isHovered,
@@ -105,8 +113,6 @@ const useHovered = <CCN extends ComponentName>(
     componentVisibilities,
   ]);
   // #endregion : effects
-
-  return [hoveredComponentName];
 };
 
 export default useHovered;

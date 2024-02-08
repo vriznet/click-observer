@@ -32,14 +32,14 @@ export const hoveredComponentSlice = createSlice({
     setHoveredComponent: (
       state,
       action: PayloadAction<{
-        parentComponentName: ComponentName;
-        hoveredComponentName: ComponentName | 'notHovered' | string;
+        componentName: ComponentName;
+        hoveredChildComponentName: ComponentName | 'notHovered' | string;
       }>
     ) => {
       return {
         ...state,
-        [action.payload.parentComponentName]:
-          action.payload.hoveredComponentName,
+        [action.payload.componentName]:
+          action.payload.hoveredChildComponentName,
       };
     },
   },

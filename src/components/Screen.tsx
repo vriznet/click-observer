@@ -7,6 +7,8 @@ import RightSidePanel from './RightSidePanel';
 import useHovered from '../hooks/useHovered';
 import { ComponentOfScreenName } from '../types/data/componentName';
 import ListContainer from './ListContainer';
+import { useSelector } from 'react-redux';
+import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
 // #endregion : imports
 
 // #region : styled components
@@ -19,16 +21,18 @@ const Container = styled.div`
 // #endregion : styled components
 
 const Screen = () => {
+  // #region : redux
+  const hoveredComponentOfScreenName = useSelector(
+    selectHoveredComponent
+  ).Screen;
+  // #endregion : redux
+
   // #region : refs
   const containerRef = useRef<HTMLDivElement>(null);
   // #endregion : refs
 
   // #region : hooks
-  const [hoveredComponentOfScreenName] = useHovered<ComponentOfScreenName>(
-    'Screen',
-    true,
-    containerRef
-  );
+  useHovered<ComponentOfScreenName>('Screen', true, containerRef);
   // #endregion : hooks
 
   useEffect(() => {
