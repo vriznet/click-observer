@@ -23,3 +23,7 @@ export type ComponentMouseActionState = {
 export type CommonComponentMouseActionState = {
   [componentName in ComponentName]: ComponentMouseActionState;
 };
+
+export type ListItemClickStatus = {
+  [id: string]: ComponentMouseActionState;
+};

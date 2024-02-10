@@ -5,11 +5,17 @@ import CommonScreenComponent from './CommonScreenComponent';
 import { useSelector } from 'react-redux';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 import { layers } from '../data/layers';
-import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
+import {
+  selectComponentClickStatus,
+  selectCursorX,
+  selectCursorY,
+} from '../redux/module/mouseSlice';
 import { Coord } from '../types/data/common';
 import { LIST_ITEM_CONTAINER_HEIGHT } from '../constants';
 import ListItem from './ListItem';
 import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
+import { ListItemClickStatus } from '../types/states';
+import { generateInitialListItemClickStatus } from '../utils';
 // #endregion : imports
 
 // #region : types
@@ -28,6 +34,10 @@ const ListContainer = () => {
   // #region : states
   const [listItemYCoords, setListItemYCoords] = useState<ListItemYCoords>({});
   const [hoveredListItemId, setHoveredListItemId] = useState<string>('');
+  const [listItemClickStatus, setListItemClickStatus] =
+    useState<ListItemClickStatus>(
+      generateInitialListItemClickStatus(layers.map((layer) => layer.id))
+    );
   // #endregion : states
 
   // #region : redux
@@ -39,6 +49,10 @@ const ListContainer = () => {
   const listContainerVisibility = useSelector(selectComponentVisibilities)[
     'Screen'
   ]?.ListContainer;
+
+  const listContainerComponentClickStatus = useSelector(
+    selectComponentClickStatus
+  ).ListContainer;
   // #endregion : redux
 
   // #region : refs
@@ -106,8 +120,16 @@ const ListContainer = () => {
   }, [isHovered, cursorX, cursorY, listItemYCoords]);
 
   useEffect(() => {
-    console.log(`hovered list item id: ${hoveredListItemId}`);
-  }, [hoveredListItemId]);
+    if (listContainerComponentClickStatus.isClickStarted) {
+      setListItemClickStatus((prev) => ({
+        ...prev,
+        [hoveredListItemId]: {
+          ...prev[hoveredListItemId],
+          isClickStarted: true,
+        },
+      }));
+    }
+  }, [hoveredListItemId, listContainerComponentClickStatus]);
   // #endregion : effects
 
   return (
@@ -129,6 +151,7 @@ const ListContainer = () => {
             itemId={layer.id}
             itemName={layer.name}
             backgroundColor={layer.color}
+            clickStatus={listItemClickStatus[layer.id]}
             isHovered={hoveredListItemId === layer.id}
           />
         ))}

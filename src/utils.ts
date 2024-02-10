@@ -5,7 +5,10 @@ import {
   PartialComponentGroupList,
   PartialComponentVisibilities,
 } from './types/data/common';
-import { CommonComponentMouseActionState } from './types/states';
+import {
+  CommonComponentMouseActionState,
+  ListItemClickStatus,
+} from './types/states';
 
 export const generateInitialComponentAppearances = (
   componentNameList: ComponentName[],
@@ -103,4 +106,27 @@ export const generateInitialComponentClickStatus = (
     {} as CommonComponentMouseActionState
   );
   return initialClickStatus;
+};
+
+export const generateInitialListItemClickStatus = (
+  listItemIdList: string[]
+): ListItemClickStatus => {
+  const initialListItemClickStatus = listItemIdList.reduce(
+    (clickStatus, id) => {
+      return {
+        ...clickStatus,
+        [id]: {
+          isClicking: false,
+          isClickStarted: false,
+          isClickEnded: false,
+          isShortClicked: false,
+          isDblClicked: false,
+          isLongClickStarted: false,
+          isLongClickEnded: false,
+        },
+      };
+    },
+    {} as ListItemClickStatus
+  );
+  return initialListItemClickStatus;
 };

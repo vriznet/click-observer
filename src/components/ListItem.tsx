@@ -3,8 +3,6 @@ import { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { LIST_ITEM_CONTAINER_HEIGHT } from '../constants';
 import { IListItemProps } from '../types/props';
-import { useSelector } from 'react-redux';
-import { selectMouseActionState } from '../redux/module/mouseSlice';
 // #endregion : imports
 
 // #region : types
@@ -29,18 +27,12 @@ const ListItem = (props: IListItemProps) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
   // #endregion : states
 
-  // #region : redux
-  const mouseActionState = useSelector(selectMouseActionState);
-  // #endregion : redux
-
   // #region : effects
   useEffect(() => {
-    if (props.isHovered) {
-      if (mouseActionState.isClickStarted) {
-        setIsSelected((prev) => !prev);
-      }
+    if (props.clickStatus.isClickStarted) {
+      setIsSelected((prev) => !prev);
     }
-  }, [props.isHovered, mouseActionState.isClickStarted]);
+  }, [props.clickStatus]);
   // #endregion : effects
 
   return (
