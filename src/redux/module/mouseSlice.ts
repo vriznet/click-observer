@@ -1,13 +1,21 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '.';
 import { Coord } from '../../types/data/common';
-import { MouseActionState } from '../../types/states';
+import {
+  CommonComponentMouseActionState,
+  ComponentMouseActionState,
+  MouseActionState,
+} from '../../types/states';
+import { generateInitialComponentClickStatus } from '../../utils';
+import { componentNameList } from '../../data/common';
+import { ComponentName } from '../../types/data/componentName';
 
 export interface MouseState {
   cursorX: number;
   cursorY: number;
   clickedCoord: Coord;
   mouseActionState: MouseActionState;
+  componentClickStatus: CommonComponentMouseActionState;
 }
 
 const initialState: MouseState = {
@@ -23,6 +31,7 @@ const initialState: MouseState = {
     isLongClickStarted: false,
     isLongClickEnded: false,
   },
+  componentClickStatus: generateInitialComponentClickStatus(componentNameList),
 };
 
 export const mouseSlice = createSlice({
@@ -47,6 +56,35 @@ export const mouseSlice = createSlice({
     ) {
       state.mouseActionState = { ...state.mouseActionState, ...action.payload };
     },
+    updateComponentClickStatus(
+      state,
+      action: PayloadAction<{
+        componentName: ComponentName;
+        clickStatus: Partial<MouseActionState>;
+      }>
+    ) {
+      state.componentClickStatus[action.payload.componentName] = {
+        ...state.componentClickStatus[action.payload.componentName],
+        ...action.payload.clickStatus,
+      };
+    },
+    updateAllComponentClickStatus(
+      state,
+      action: PayloadAction<Partial<ComponentMouseActionState>>
+    ) {
+      state.componentClickStatus = {
+        ...state.componentClickStatus,
+        ...componentNameList.reduce((clickStatus, componentName) => {
+          return {
+            ...clickStatus,
+            [componentName]: {
+              ...state.componentClickStatus[componentName],
+              ...action.payload,
+            },
+          };
+        }, {} as CommonComponentMouseActionState),
+      };
+    },
   },
 });
 
@@ -56,6 +94,8 @@ export const {
   setClickedCoord,
   setMouseActionState,
   updateMouseActionState,
+  updateComponentClickStatus,
+  updateAllComponentClickStatus,
 } = mouseSlice.actions;
 
 export const selectCursorX = (state: RootState) => state.mouse.cursorX;
@@ -64,5 +104,7 @@ export const selectClickedCoord = (state: RootState) =>
   state.mouse.clickedCoord;
 export const selectMouseActionState = (state: RootState) =>
   state.mouse.mouseActionState;
+export const selectComponentClickStatus = (state: RootState) =>
+  state.mouse.componentClickStatus;
 
 export default mouseSlice.reducer;

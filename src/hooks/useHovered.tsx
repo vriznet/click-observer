@@ -1,17 +1,19 @@
+// #region : imports
 import { RefObject, useCallback, useEffect } from 'react';
-import { ComponentName } from '../types/data/componentName';
+import { ComponentBoundary, ComponentName } from '../types/data/componentName';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { selectComponentAppearances } from '../redux/module/componentAppearancesSlice';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
 import { setHoveredComponent } from '../redux/module/hoveredComponentSlice';
+// #endregion : imports
 
 const useHovered = <CCN extends ComponentName>(
   componentName: ComponentName,
   isHovered: boolean,
   containerRef: RefObject<HTMLElement>
 ) => {
-  const boundaryName = `${componentName}Boundary` as const;
+  const boundaryName: ComponentBoundary = `${componentName}Boundary`;
 
   // #region : redux
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const useHovered = <CCN extends ComponentName>(
     (
       point: { x: number; y: number },
       containerCoord: { x: number; y: number }
-    ): CCN | typeof boundaryName | 'notHovered' => {
+    ): CCN | ComponentBoundary | 'notHovered' => {
       if (
         componentAppearances === undefined ||
         componentVisibilities === undefined

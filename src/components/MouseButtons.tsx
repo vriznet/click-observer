@@ -179,55 +179,6 @@ const MouseButtons = () => {
   }, [handleMouseClickStart, handleMouseClickEnd]);
   // #endregion :: assign event listeners
 
-  // #region :: update mouse action state
-  useEffect(() => {
-    if (mouseActionState.isClickStarted) {
-      setTimeout(() => {
-        dispatch(
-          updateMouseActionState({
-            isClickStarted: false,
-          })
-        );
-      }, 1);
-    }
-    if (mouseActionState.isClickEnded) {
-      setTimeout(() => {
-        dispatch(
-          updateMouseActionState({
-            isClickEnded: false,
-          })
-        );
-      }, 1);
-    }
-    if (mouseActionState.isShortClicked) {
-      setTimeout(() => {
-        dispatch(
-          updateMouseActionState({
-            isShortClicked: false,
-          })
-        );
-      }, 1);
-    }
-    if (mouseActionState.isDblClicked) {
-      setTimeout(() => {
-        dispatch(
-          updateMouseActionState({
-            isDblClicked: false,
-          })
-        );
-      }, 1);
-    }
-    if (mouseActionState.isLongClickEnded) {
-      setTimeout(() => {
-        dispatch(
-          updateMouseActionState({
-            isLongClickEnded: false,
-          })
-        );
-      }, 1);
-    }
-  }, [mouseActionState]);
-  // #endregion :: update mouse action state
   // #endregion : effects
 
   return (

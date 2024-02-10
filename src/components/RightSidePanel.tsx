@@ -1,6 +1,5 @@
 // #region : imports
-import { memo, useEffect, useRef } from 'react';
-import { IRightSidePanelProps } from '../types/props';
+import { memo, useRef } from 'react';
 import Blue from './Blue';
 import Black from './Black';
 import CommonScreenComponent from './CommonScreenComponent';
@@ -11,14 +10,14 @@ import { useSelector } from 'react-redux';
 import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
 // #endregion : imports
 
-const RightSidePanel = (props: IRightSidePanelProps) => {
+const RightSidePanel = () => {
   // #region : redux
   const rightPanelVisibility = useSelector(selectComponentVisibilities)[
     'Screen'
   ]?.RightSidePanel;
-  const hoveredComponentOfRightSidePanelName = useSelector(
-    selectHoveredComponent
-  ).RightSidePanel;
+
+  const isHovered =
+    useSelector(selectHoveredComponent).Screen === 'RightSidePanel';
   // #endregion : redux
 
   // #region : refs
@@ -28,18 +27,10 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
   // #region : hooks
   useHovered<ComponentOfRightSidePanelName>(
     'RightSidePanel',
-    props.isHovered,
+    isHovered,
     rightSidePanelRef
   );
   // #endregion : hooks
-
-  // #region : effects
-  useEffect(() => {
-    console.log(
-      `right side panel hovered: ${hoveredComponentOfRightSidePanelName}`
-    );
-  }, [hoveredComponentOfRightSidePanelName]);
-  // #endregion : effects
 
   return (
     <CommonScreenComponent
@@ -54,7 +45,7 @@ const RightSidePanel = (props: IRightSidePanelProps) => {
       ref={rightSidePanelRef}
     >
       <Blue />
-      <Black isHovered={hoveredComponentOfRightSidePanelName === 'Black'} />
+      <Black />
     </CommonScreenComponent>
   );
 };

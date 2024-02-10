@@ -1,34 +1,39 @@
+// #region : imports
 import { memo, useEffect } from 'react';
 import CommonScreenComponent from './CommonScreenComponent';
-import { IBlackProps } from '../types/props';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMouseActionState } from '../redux/module/mouseSlice';
 import {
   selectComponentVisibilities,
   updateSpecificComponentVisibility,
 } from '../redux/module/componentVisibilitiesSlice';
+import { selectComponentClickStatus } from '../redux/module/mouseSlice';
+// #endregion : imports
 
-const Black = (props: IBlackProps) => {
+const Black = () => {
+  // #region : redux
   const dispatch = useDispatch();
 
   const blackVisibility = useSelector(selectComponentVisibilities)[
     'RightSidePanel'
   ]?.Black;
 
-  const mouseActionState = useSelector(selectMouseActionState);
+  const blackComponentClickStatus = useSelector(
+    selectComponentClickStatus
+  ).Black;
+  // #endregion : redux
 
+  // #region : effects
   useEffect(() => {
-    if (props.isHovered) {
-      if (mouseActionState.isClickStarted) {
-        dispatch(
-          updateSpecificComponentVisibility({
-            componentName: 'RightSidePanel',
-            visibility: false,
-          })
-        );
-      }
+    if (blackComponentClickStatus.isClickEnded) {
+      dispatch(
+        updateSpecificComponentVisibility({
+          componentName: 'RightSidePanel',
+          visibility: false,
+        })
+      );
     }
-  }, [props.isHovered, mouseActionState]);
+  }, [blackComponentClickStatus]);
+  // #endregion : effects
 
   return (
     <CommonScreenComponent

@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import CommonScreenComponent from './CommonScreenComponent';
 import { useSelector } from 'react-redux';
 import { selectComponentVisibilities } from '../redux/module/componentVisibilitiesSlice';
-import { IListContainerProps } from '../types/props';
 import { layers } from '../data/layers';
 import { selectCursorX, selectCursorY } from '../redux/module/mouseSlice';
 import { Coord } from '../types/data/common';
 import { LIST_ITEM_CONTAINER_HEIGHT } from '../constants';
 import ListItem from './ListItem';
+import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
 // #endregion : imports
 
 // #region : types
@@ -24,7 +24,7 @@ const ListContainerSC = styled.ul`
 `;
 // #endregion : styled components
 
-const ListContainer = (props: IListContainerProps) => {
+const ListContainer = () => {
   // #region : states
   const [listItemYCoords, setListItemYCoords] = useState<ListItemYCoords>({});
   const [hoveredListItemId, setHoveredListItemId] = useState<string>('');
@@ -34,6 +34,8 @@ const ListContainer = (props: IListContainerProps) => {
   const cursorX = useSelector(selectCursorX);
   const cursorY = useSelector(selectCursorY);
 
+  const isHovered =
+    useSelector(selectHoveredComponent).Screen === 'ListContainer';
   const listContainerVisibility = useSelector(selectComponentVisibilities)[
     'Screen'
   ]?.ListContainer;
@@ -92,7 +94,7 @@ const ListContainer = (props: IListContainerProps) => {
   }, [listContainerVisibility]);
 
   useEffect(() => {
-    if (props.isHovered) {
+    if (isHovered) {
       const hoveredListItemId = getListItemIdFromPoint({
         x: cursorX,
         y: cursorY,
@@ -101,7 +103,7 @@ const ListContainer = (props: IListContainerProps) => {
     } else {
       setHoveredListItemId('');
     }
-  }, [props.isHovered, cursorX, cursorY, listItemYCoords]);
+  }, [isHovered, cursorX, cursorY, listItemYCoords]);
 
   useEffect(() => {
     console.log(`hovered list item id: ${hoveredListItemId}`);

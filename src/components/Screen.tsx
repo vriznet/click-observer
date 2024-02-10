@@ -1,14 +1,12 @@
 // #region : imports
 import { styled } from 'styled-components';
 import Cursor from './Cursor';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useRef } from 'react';
 import LeftSidePanel from './LeftSidePanel';
 import RightSidePanel from './RightSidePanel';
 import useHovered from '../hooks/useHovered';
 import { ComponentOfScreenName } from '../types/data/componentName';
 import ListContainer from './ListContainer';
-import { useSelector } from 'react-redux';
-import { selectHoveredComponent } from '../redux/module/hoveredComponentSlice';
 // #endregion : imports
 
 // #region : styled components
@@ -21,12 +19,6 @@ const Container = styled.div`
 // #endregion : styled components
 
 const Screen = () => {
-  // #region : redux
-  const hoveredComponentOfScreenName = useSelector(
-    selectHoveredComponent
-  ).Screen;
-  // #endregion : redux
-
   // #region : refs
   const containerRef = useRef<HTMLDivElement>(null);
   // #endregion : refs
@@ -35,23 +27,12 @@ const Screen = () => {
   useHovered<ComponentOfScreenName>('Screen', true, containerRef);
   // #endregion : hooks
 
-  useEffect(() => {
-    console.log(`screen hovered: ${hoveredComponentOfScreenName}`);
-  }, [hoveredComponentOfScreenName]);
-  // #endregion : effects
-
   return (
     <Container ref={containerRef}>
       <Cursor />
-      <LeftSidePanel
-        isHovered={hoveredComponentOfScreenName === 'LeftSidePanel'}
-      />
-      <RightSidePanel
-        isHovered={hoveredComponentOfScreenName === 'RightSidePanel'}
-      />
-      <ListContainer
-        isHovered={hoveredComponentOfScreenName === 'ListContainer'}
-      />
+      <LeftSidePanel />
+      <RightSidePanel />
+      <ListContainer />
     </Container>
   );
 };

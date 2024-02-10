@@ -5,6 +5,7 @@ import {
   PartialComponentGroupList,
   PartialComponentVisibilities,
 } from './types/data/common';
+import { CommonComponentMouseActionState } from './types/states';
 
 export const generateInitialComponentAppearances = (
   componentNameList: ComponentName[],
@@ -79,4 +80,27 @@ export const getParentComponentNameOfComponentElement = (
     (property) => componentGroupList[property]?.includes(componentName)
   );
   return parentComponentName;
+};
+
+export const generateInitialComponentClickStatus = (
+  componentNameList: ComponentName[]
+) => {
+  const initialClickStatus = componentNameList.reduce(
+    (clickStatus, componentName) => {
+      return {
+        ...clickStatus,
+        [componentName]: {
+          isClicking: false,
+          isClickStarted: false,
+          isClickEnded: false,
+          isShortClicked: false,
+          isDblClicked: false,
+          isLongClickStarted: false,
+          isLongClickEnded: false,
+        },
+      };
+    },
+    {} as CommonComponentMouseActionState
+  );
+  return initialClickStatus;
 };

@@ -1,3 +1,4 @@
+import ClickObserver from './components/ClickObserver';
 import { GlobalStyles } from './components/GlobalStyles';
 import MouseButtons from './components/MouseButtons';
 import Screen from './components/Screen';
@@ -7,6 +8,7 @@ const App = () => {
   return (
     <>
       <GlobalStyles />
+      <ClickObserver />
       <div
         style={{
           display: 'flex',

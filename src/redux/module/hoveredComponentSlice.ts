@@ -1,23 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
-  ComponentOfLeftSidePanelName,
-  ComponentOfRightSidePanelName,
-  ComponentOfScreenName,
+  ComponentHasHovered,
+  ComponentName,
+  HoveredComponentName,
 } from '../../types/data/componentName';
-import { ComponentName } from '../../types/data/componentName';
 import { RootState } from '.';
 
-export interface HoveredComponentState {
-  Screen: ComponentOfScreenName | 'ScreenBoundary';
-  LeftSidePanel:
-    | ComponentOfLeftSidePanelName
-    | 'notHovered'
-    | 'LeftSidePanelBoundary';
-  RightSidePanel:
-    | ComponentOfRightSidePanelName
-    | 'notHovered'
-    | 'RightSidePanelBoundary';
-}
+export type HoveredComponentState = {
+  [componentName in ComponentHasHovered]: HoveredComponentName;
+};
 
 const initialState: HoveredComponentState = {
   Screen: 'ScreenBoundary',
